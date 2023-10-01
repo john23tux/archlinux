@@ -12,6 +12,10 @@
 
   c. # install -y balena-etcher-electron
 
+  d. flash the drive 
+
+Depending on your OS, choose the most appropiate method/program to flash the ISO
+
 3. booted my PC from the usb and choose installing Arch Linux
 
   3.1 Setting up the font to a more friendly one:
