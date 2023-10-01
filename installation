@@ -156,7 +156,8 @@
 
     # systemctl enable bluetooth
 
-6. # Exit and umount -a
+6. # Exit
+   # umount -a
 
 7. # reboot  --> after system reboot you can remove the USB with the ISO and login to your new installed ArchLinux :)
 
