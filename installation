@@ -1,0 +1,178 @@
+## INSTALLNG ARCHLINUX with GUI and Network Manager
+
+1. Download ISO file from one of the available mirrors from here https://archlinux.org/download/
+2. Flash the ISO in an USB, my main OS is Alma Linux 9.2 and I used Balena Etcher https://etcher.balena.io/, I followed these instructions for installing the repo and the program itself:  
+  a. Installing and adding the repo 
+
+    # curl -1sLf \
+    'https://dl.cloudsmith.io/public/balena/etcher/setup.rpm.sh' \
+    | sudo -E bash
+
+  b. # dnf update
+
+  c. # install -y balena-etcher-electron
+
+3. booted my PC from the usb and choose installing Arch Linux
+
+  3.1 Setting up the font to a more friendly one:
+
+    # setfont ter-132b
+
+  3.2 connecting to wifi
+
+    # iwctl
+    # iwctl list
+    # device <device> set-property Powered on
+    # station <device> scan
+    # station <device> get-networks
+    # station <device> connect <network> 
+
+    insert the passphrase 
+
+    NOTE: if you failed to connect the wifi, please check the configuration file /etc/iwd/main.conf
+
+      Hence, exit iwctl with "exit" run cat /etc/iwd/main.conf, if it does not exist, run vim /etc/iwd/main.conf and add the following:
+
+        [General]
+        EnableNetworkConfiguration=true
+
+        [Network]
+        NameResolvingService=systemd
+
+    Afterwards, try again:
+
+    # iwctl
+    # iwctl list
+    # device <device> set-property Powered on
+    # station <device> scan
+    # station <device> get-networks
+    # station <device> connect <network> 
+
+    You should be able to connect to wifi without further problems, exit iwctl
+
+
+  3.3 Test internet and repos connectivity 
+
+      # ping google.com
+
+      # pacman -Sy
+
+
+  3.4 Set the timezone and ntp, this is vlid only for the installation
+
+      # timedatectl set-timezone Europe/Warsaw --> set up the region according to your preferences
+      # timedatectl set-ntp true
+
+  3.5 Let's set up the boot/efi, root and swap partitions
+
+      # fdisk /dev/the_disk_to_be_partitioned
+
+
+      /dev/efi_system_partition -- type: EFI system partition -- size: At least 300 MiB. If multiple kernels will be installed, then no less than 1 GiB
+      /dev/swap_partition -- type: Linux swap --size: More than 512 MiB 
+      /dev/root_partition -- type: Linux x86-64 root (/) --size: At your convenience
+
+  3.6 Format the partitions
+
+      # mkfs.ext4 /dev/root_partition  --> choose other types of fs of your preference such as xfs
+      # mkswap /dev/swap_partition
+      # mkfs.fat -F 32 /dev/efi_system_partition
+
+  3.7 Mount the file systems
+
+      # mount --mkdir /dev/root_partition /mnt
+      # mkdir /mnt/boot/efi
+      # mount /dev/efi_system_partition /mnt/boot/efi
+      # swapon /dev/swap_partition
+
+4. Installation
+
+  # pacman -Syy
+  # pacstrap -K /mnt base linux linux-firmware vim nano
+
+5. Configure the system
+
+  # genfstab -U /mnt >> /mnt/etc/fstab
+
+  5.1 chroot
+
+    # arch-chroot /mnt
+
+  5.2 Time zone
+
+    # ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+    # hwclock --systohc
+
+  5.3 Localization
+
+    # echo 'LANG=en_US.UTF-8' > /etc/locale.conf
+    # echo 'KEYMAP=us-acentos' > /etc/vconsole.conf
+
+    check man vconsole and locale for different configurations
+
+  5.4 Configuring swap
+
+    # fallocate -l xxxB /swapfile
+    # chmod 600 /swapfile
+    # mkswap /swapfile
+    # swapon /swapfile
+
+  5.5 Network configuration
+
+    # vi /etc/hostname --> add your hostname there
+    # vi /etc/hosts --> a standard configuration can be:
+
+        127.0.0.1 localhost
+        ::1       localhost
+        127.0.1.1 host.localdomain host
+
+  5.6 create a password for Root
+
+    # passwd
+
+  5.7 create a standard user with sudo rights
+
+    # useradd -mG wheel xxxxxxx
+    # passwd xxxxxxx
+
+  5.8 Install the following:
+
+    # pacman -S grub efibootmgr networkmanager os-prober dialog base-devel linux-headers gnome gnome-terminal gnome-tweaks cups openssh
+
+  5.9 Setting up grub
+
+    # grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+    # grub-mkconfig -o /boot/grub/grub.cfg
+
+  5.10 Enable network manager and gnome
+
+    # systemctl enable NetworkManager
+    # systemctl enable gdm
+    # systemctl enable orgs.cups.cupsd
+
+  5.11 optional, install bluetooth utils and enable the service
+
+    # pacman -S bluez bluez-utils
+
+    # systemctl enable bluetooth
+
+6. # Exit and umount -a
+
+7. # reboot  --> after system reboot you can remove the USB with the ISO and login in your new installed arch Linux :)
+
+    
+    
+    
+    
+
+
+
+  
+  
+      
+
+        
+
+          
+
+          
