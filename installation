@@ -1,4 +1,4 @@
-# INSTALLNG ARCHLINUX with GUI and Network Manager
+# INSTALLING ARCHLINUX with GUI and Network Manager
 
 1. Download ISO file from one of the available mirrors from here https://archlinux.org/download/
 2. Flash the ISO in an USB, my main OS is Alma Linux 9.2 and I used Balena Etcher https://etcher.balena.io/, I followed these instructions for installing the repo and the program itself:  
@@ -158,9 +158,15 @@
 
 6. # Exit and umount -a
 
-7. # reboot  --> after system reboot you can remove the USB with the ISO and login in your new installed arch Linux :)
+7. # reboot  --> after system reboot you can remove the USB with the ISO and login in your new installed ArchLinux :)
 
-    
+
+Resources: 
+
+https://wiki.archlinux.org/title/installation_guide
+https://wiki.archlinux.org/title/GNOME
+https://etcher.balena.io/
+https://linux.how2shout.com/install-balenaetcher-using-repository-on-linux/
     
     
     
