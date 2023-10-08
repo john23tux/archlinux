@@ -25,7 +25,7 @@ Depending on your OS, choose the most appropiate method/program to flash the ISO
   3.2 connecting to wifi
 
     # iwctl
-    # iwctl list
+    # device list
     # device <device> set-property Powered on
     # station <device> scan
     # station <device> get-networks
